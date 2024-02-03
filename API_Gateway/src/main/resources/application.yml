@@ -1,11 +1,27 @@
-oserver:
+server:
   port: 8083
   
-spring:  application:    name: API_GATEWAY
+spring:
+  application:
+    name: API_GATEWAY
     
-      cloud:    gateway:      routes:      - id: CITIZEN-SERVICE
-        uri:          lb://CITIZEN-SERVICE
-        predicates:        - Path=/citizen/**
+    
+  cloud:
+    gateway:
+      routes:
+      - id: CITIZEN-SERVICE
+        uri:
+          lb://CITIZEN-SERVICE
+        predicates:
+        - Path=/citizen/**
+        filters:
+          - AuthenticationFilter
+
+      - id: SECURITY-SERVICE
+        uri:
+          lb://SECURITY-SERVICE
+        predicates:
+          - Path=/auth/**
         
       - id: VACCINATION-CENTER-SERVICE
         uri:
@@ -14,4 +30,3 @@ spring:  application:    name: API_GATEWAY
         - Path=/vaccinationcenter/**
         
         
-          
